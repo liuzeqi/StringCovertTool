@@ -1,14 +1,14 @@
 ## 目的
 
-本项目的开发目的是由于在 Android 项目中会有多语言翻译的需求，在我们做完中文给到专业人员翻译的时候，有字符串到出的需求；反之，多国语言翻译回来之后，同时有导入的需求，手动复制粘贴一定是最低效的方式。所以这个脚本只有两个功能，一个是导出，xml -> xls ，一个是导入 xls -> xml
+本项目的开发目的是由于在 Android 项目中会有多语言翻译的需求，在我们做完中文给到专业人员翻译的时候，有字符串导出的需求；反之，多国语言翻译回来之后，同时有导入的需求，手动复制粘贴一定是最低效的方式。所以这个脚本只有两个功能，一个是导出：xml -> xls ，一个是导入：xls -> xml
 
 ## 使用方法
 
 ### 环境
 - Python2
 - python库 
-    - xlrd（导入使用）
     - pyExcelerator(导出使用)
+    - xlrd、xlwt（导入使用）
 
 ### 配置
 Config 里面默认配置了 表格的 title 等属性
@@ -23,6 +23,41 @@ export_base_title = "zh"  # 导出基准 title
 ```
 
 ## 参数说明 
+
+### 导出
+> 导出没有添加输入参数，直接支持可视化操作
+- 单个文件，
+    - 输入要导出的 excel 路径，比如，选择路径为 C:\Users\Administrator\Desktop，那么会在桌面上创建一个 Output.xls 文件，完成路径为 C:\Users\Administrator\Desktop\Output.xls
+    - 输入要导出的 xml 文件，结果就会将 xml 的 键值对导出到 excel 表中
+    
+- 目录方式
+    - 要导出的 excel 路径，同上
+    - 要导出的 xml 目录路径，如 ..\android, android 目录下有如下文件格式
+   
+   
+    ```
+    ├── andorid
+    │   ├── values-zh
+    │   |	├── strings_device.xml
+    │   |	├── strings_me.xml
+    │   |	├── strings_moment.xml
+    │   ├── values-de
+    │   ├── values-ko
+    │   ├── values
+    ```
+    注：目录方式会默认以 values-zh 作为基准（比如 key 的顺序），可以通过修改 Config 属性 ```export_base_dir``` 和 ```export_base_title``` 来定制
+   
+   ### 导出效果
+   
+   | Android module | Android keyName | zh   | en   | ko   |
+   | -------------- | --------------- | ---- | ---- | ---- |
+   | strings_me     | me_1            |      |      |      |
+   | strings_me     | me_2            |      |      |      |
+   | strings_me     | me_3            |      |      |      |
+   | strings_moment | moment_1        |      |      |      |
+   | strings_moment | moment_2        |      |      |      |
+   | strings_moment | moment_3        |      |      |      |
+   | strings_device | device_1        |      |      |      |
 
 ### 导入
 
@@ -61,40 +96,7 @@ python xls2xml.py -i "C:\Users\Administrator\Desktop\App Native - 1126.xlsx" -l 
   ```
   python .\xls2xml.py -i "C:\Users\Administrator\Desktop\App Native - 1126.xlsx" -d "C:\Users\Administrator\Desktop\p"
   ```
-### 导出
-> 导出没有添加输入参数，直接支持可视化操作
-- 单个文件，
-    - 输入要导出的 excel 路径，比如，选择路径为 C:\Users\Administrator\Desktop，那么会在桌面上创建一个 Output.xls 文件，完成路径为 C:\Users\Administrator\Desktop\Output.xls
-    - 输入要导出的 xml 文件，结果就会将 xml 的 键值对导出到 excel 表中
-    
-- 目录方式
-    - 要导出的 excel 路径，同上
-    - 要导出的 xml 目录路径，如 ..\android, android 目录下有如下文件格式
-   
-   
-    ```
-    ├── andorid
-    │   ├── values-zh
-    │   |	├── strings_device.xml
-    │   |	├── strings_me.xml
-    │   |	├── strings_moment.xml
-    │   ├── values-de
-    │   ├── values-ko
-    │   ├── values
-    ```
-    注：目录方式会默认以 values-zh 作为基准（比如 key 的顺序），可以通过修改 Config 属性 ```export_base_dir``` 和 ```export_base_title``` 来定制
-   
-   ### 导出效果
-   
-   | Android module | Android keyName | zh   | en   | ko   |
-   | -------------- | --------------- | ---- | ---- | ---- |
-   | strings_me     | me_1            |      |      |      |
-   | strings_me     | me_2            |      |      |      |
-   | strings_me     | me_3            |      |      |      |
-   | strings_moment | moment_1        |      |      |      |
-   | strings_moment | moment_2        |      |      |      |
-   | strings_moment | moment_3        |      |      |      |
-   | strings_device | device_1        |      |      |      |
+
 ### 注意点：
 
 - xml 目录指的都是包含着 values-zh 等目录的文件夹
